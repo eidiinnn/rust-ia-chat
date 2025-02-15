@@ -26,7 +26,7 @@ async fn ia_ask_stream<R: Runtime>(
 ) -> Result<String, String> {
     let model = match model {
         Some(model) => model,
-        None => String::from("Option 1"),
+        None => String::from("llama3.2"),
     };
 
     let ia = IaInterface::new("asking with stream returning".to_string(), model, None);
