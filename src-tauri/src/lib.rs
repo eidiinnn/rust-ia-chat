@@ -16,6 +16,7 @@ async fn ia_ask(message: &str) -> Result<String, String> {
 #[derive(Clone, serde::Serialize)]
 pub struct StreamPayload {
     pub message: String,
+    pub done: bool,
 }
 
 #[tauri::command]
@@ -46,6 +47,7 @@ async fn ia_ask_stream<R: Runtime>(
                         "ai_ask_stream_return",
                         StreamPayload {
                             message: message.clone(),
+                            done: response.done,
                         },
                     )
                     .unwrap();
@@ -54,7 +56,7 @@ async fn ia_ask_stream<R: Runtime>(
         }
     }
 
-    Ok("success".to_string())
+    Ok(message)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
