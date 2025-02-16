@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
-import {
-  TextField,
-  Button,
-  Autocomplete,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { TextField, Button, Autocomplete } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import ReactMarkdown from "react-markdown";
-import "./App.css";
+import Messages from "./messages";
+import "./chat.css";
 
 type card = {
   model: string;
@@ -18,7 +12,7 @@ type card = {
   end: boolean;
 };
 
-function App() {
+function Chat() {
   const [askInResponse, setAskInResponse] = useState("");
   const [responsesCard, setResponsesCard] = useState<Array<card>>([]);
   const [messageInput, setMessageInput] = useState("");
@@ -48,6 +42,10 @@ function App() {
     setAskInResponse("");
   }
 
+  function cleanResponsesCards() {
+    setResponsesCard([]);
+  }
+
   useEffect(() => {
     const container = document.querySelector(".message-container");
     if (container) container.scrollTop = container.scrollHeight;
@@ -64,8 +62,8 @@ function App() {
   });
 
   return (
-    <main className="container">
-      <div className="header-container">
+    <main className="chat-container">
+      <div className="chat-header-container">
         <Autocomplete
           size="small"
           value={model}
@@ -76,22 +74,17 @@ function App() {
             if (value) setModel(value);
           }}
         />
+        <Button variant="contained" onClick={cleanResponsesCards}>Clean</Button>
       </div>
-      <div className="message-container">
+      <div className="chat-message-container">
         <div>
-          {responsesCard.map((response, index) => (
-            <Card key={index}>
-              <CardContent>
-                <div>{response.model}</div>
-                <ReactMarkdown>
-                  {response.end ? response.message : askInResponse}
-                </ReactMarkdown>
-              </CardContent>
-            </Card>
-          ))}
+          <Messages
+            responsesCard={responsesCard}
+            askInResponse={askInResponse}
+          />
         </div>
       </div>
-      <div className="input-container">
+      <div className="chat-input-container">
         <TextField
           id="standard-basic"
           variant="outlined"
@@ -114,4 +107,4 @@ function App() {
   );
 }
 
-export default App;
+export default Chat;
