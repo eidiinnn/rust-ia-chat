@@ -47,7 +47,7 @@ function Chat() {
   }
 
   useEffect(() => {
-    const container = document.querySelector(".message-container");
+    const container = document.querySelector(".chat-message-container");
     if (container) container.scrollTop = container.scrollHeight;
   }, [askInResponse]);
 
